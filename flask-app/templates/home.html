@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Watch Price - Explore luxury watch brands and their models for educational purposes">
+    <title>Watch Price | Luxury Watch Collection</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ==========================================================================
+           1. CSS Variables and Themes
+           ========================================================================== */
+        :root {
+            --primary-color: #0a1f1c;
+            --primary-light: #1a3d38;
+            --secondary-color: #d4af37;
+            --accent-color: #8b4513;
+            --text-light: #f8f8f8;
+            --text-dark: #2c2c2c;
+            --bg-light: #fefefe;
+            --bg-dark: #1a1a1a;
+            --card-bg: #ffffff;
+            --section-bg: #f8f9fa;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.2);
+            --border-radius: 16px;
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --gold-gradient: linear-gradient(135deg, #d4af37, #f9e076, #d4af37);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #4A90E2;
+            --primary-light: #5A9EEE;
+            --secondary-color: #d4af37;
+            --text-light: #F0F0F0;
+            --text-dark: #F0F0F0;
+            --bg-light: #0D1117;
+            --card-bg: #161B22;
+            --section-bg: #111827;
+            --shadow: 0 8px 32px rgba(13, 17, 23, 0.4);
+            --shadow-hover: 0 16px 48px rgba(13, 17, 23, 0.5);
+        }
+
+        /* ==========================================================================
+           2. Base & Global Styles
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+        main {
+            margin-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: var(--primary-color);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        /* ==========================================================================
+           3. Navigation
+           ========================================================================== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(10, 31, 28, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 0 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            height: 70px;
+            background: rgba(10, 31, 28, 0.98);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] .navbar {
+            background: rgba(22, 27, 34, 0.95);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        [data-theme="dark"] .navbar.scrolled {
+            background: rgba(22, 27, 34, 0.98);
+        }
+
+        .brand {
+            color: var(--secondary-color);
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            text-decoration: none;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: var(--transition);
+        }
+
+        .brand:hover {
+            transform: translateX(-50%) scale(1.05);
+            color: #f9e076;
+        }
+
+        .hamburger-menu {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .hamburger-toggle {
+            background: none;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.8rem;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .hamburger-toggle:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: scale(1.1);
+        }
+
+        .hamburger-toggle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .hamburger-toggle:hover::before {
+            left: 100%;
+        }
+
+        .hamburger-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(10, 31, 28, 0.98);
+            backdrop-filter: blur(20px);
+            min-width: 220px;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            box-shadow: var(--shadow-hover);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 1000;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-top: none;
+        }
+
+        [data-theme="dark"] .hamburger-content {
+            background: rgba(22, 27, 34, 0.98);
+        }
+
+        .hamburger-menu.active .hamburger-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .hamburger-links {
+            list-style: none;
+            padding: 0.5rem 0;
+        }
+
+        .hamburger-links li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hamburger-links li:last-child {
+            border-bottom: none;
+        }
+
+        .hamburger-links a {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .hamburger-links a:hover {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--secondary-color);
+            padding-left: 2rem;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--text-light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.8rem;
+            border-radius: 50%;
+            margin-left: 1rem;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: rotate(180deg);
+        }
+
+        .nav-toggle,
+        .nav-links {
+            display: none;
+        }
+
+        /* ==========================================================================
+           4. Components
+           ========================================================================== */
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid var(--secondary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .loading-text {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 10000;
+            transition: var(--transition);
+        }
+
+        .skip-link:focus {
+            top: 6px;
+        }
+
+        .bg-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .card {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            background: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+            z-index: 1;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .card:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .like-btn,
+        .share-btn {
+            background: none;
+            border: none;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-dark);
+        }
+
+        .like-btn:hover,
+        .share-btn:hover {
+            background: var(--section-bg);
+            transform: scale(1.1);
+        }
+
+        .like-btn.liked {
+            color: #e74c3c;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--gold-gradient);
+            color: var(--primary-color);
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 1.1s forwards;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .predict-btn {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+
+        .predict-btn:hover,
+        .predict-btn:focus {
+            background-color: var(--primary-light);
+            outline: none;
+            transform: translateY(-2px);
+        }
+
+        .slide-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .slide-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-light);
+            transform: translateY(-3px);
+        }
+
+        /* ==========================================================================
+           5. Page Sections
+           ========================================================================== */
+        .hero {
+            padding: 4rem 1rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: var(--text-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("{{ url_for('static', filename='images/main_wallpaper.png') }}") center/cover;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 0.7s forwards;
+        }
+
+        .live-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin: 3rem auto;
+            max-width: 600px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 0.9s forwards;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .counter {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            display: block;
+        }
+
+        .counter-container {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            display: block;
+        }
+
+        .counter-container > .counter,
+        .counter-container > span {
+            display: inline-block;
+        }
+
+        .search-filter {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .search-filter.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .search-input,
+        .filter-select {
+            padding: 12px 20px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 25px;
+            font-size: 1rem;
+            background: var(--card-bg);
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .search-input,
+        [data-theme="dark"] .filter-select {
+             border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .search-input:focus,
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .slideshow-section,
+        .brands-section,
+        .discovery-section {
+            padding: 4rem 1rem;
+            background: var(--section-bg);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .slideshow-section.animate-in,
+        .brands-section.animate-in,
+        .discovery-section.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .brands-section {
+             background: var(--bg-light);
+        }
+
+        .slideshow-wrapper {
+            max-width: 1200px;
+            height: 500px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .slides {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slides.active {
+            opacity: 1;
+        }
+
+        .slides img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slides-caption {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .slideshow-controls {
+            position: absolute;
+            top: 50%;
+            left: 0; right: 0;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            padding: 0 1rem;
+            z-index: 2;
+        }
+
+        .slideshow-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 2;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        .more-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+            min-height: 300px;
+        }
+
+        .more-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+        }
+
+        .more-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .more-card span {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .discovery-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 0 1rem;
+        }
+
+        .discovery-card {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+            aspect-ratio: 1;
+        }
+
+        .discovery-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .discovery-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .discovery-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .discovery-overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            color: white;
+            padding: 1.5rem;
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+
+        .discovery-card:hover .discovery-overlay {
+            transform: translateY(0);
+        }
+
+        .footer {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 4rem 1rem 2rem;
+        }
+
+        [data-theme="dark"] .footer {
+            background-color: #0D1117;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .footer-text h2 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .newsletter {
+            margin-top: 2rem;
+        }
+
+        .newsletter h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+        }
+
+        .newsletter-form button {
+            background: var(--secondary-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .newsletter-form button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .footer-icons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .footer-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .footer-icons a:hover,
+        .footer-icons a:focus {
+            background-color: var(--primary-light);
+            transform: scale(1.1);
+            outline: none;
+        }
+
+        .footer-icons img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* ==========================================================================
+           6. Responsive Design
+           ========================================================================== */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+                background: none;
+                border: 1px solid rgba(212, 175, 55, 0.3);
+                color: var(--text-light);
+                font-size: 1.5rem;
+                cursor: pointer;
+                padding: 0.8rem;
+                border-radius: 50%;
+                position: relative;
+                overflow: hidden;
+                transition: var(--transition);
+            }
+
+            .nav-links {
+                display: flex;
+                position: fixed;
+                top: 80px;
+                right: -100%;
+                width: 280px;
+                height: calc(100vh - 80px);
+                background: rgba(10, 31, 28, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                gap: 0;
+                transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                border-left: 1px solid rgba(212, 175, 55, 0.2);
+                z-index: 999;
+            }
+
+            [data-theme="dark"] .nav-links {
+                 background: rgba(22, 27, 34, 0.98);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 1.5rem 2rem;
+                font-size: 1.1rem;
+            }
+
+            .navbar {
+                padding: 0 1rem;
+            }
+
+            .brand {
+                font-size: 1.4rem;
+            }
+
+            .hamburger-menu {
+                display: none;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-text {
+                text-align: center;
+            }
+
+            .footer-icons {
+                justify-content: center;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+
+        /* ==========================================================================
+           7. Accessibility & Animations
+           ========================================================================== */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+
+<body data-theme="light">
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading Luxury Collection...</div>
+    </div>
+
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <nav class="navbar" id="navbar" aria-label="Main Navigation">
+        <div class="hamburger-menu">
+            <button class="hamburger-toggle" id="hamburgerToggle" aria-expanded="false" aria-controls="hamburgerContent">
+                <i class="fas fa-bars"></i>
+                <span class="sr-only">Menu</span>
+            </button>
+            <div class="hamburger-content" id="hamburgerContent">
+                <ul class="hamburger-links">
+                    <li><a href="{{ url_for('contents') }}">All Watches</a></li>
+                    <li><a href="#discovery">Discovery</a></li>
+                    <li><a href="#">Settings</a></li>
+                    <li><a href="#contact">Support</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <a href="{{ url_for('home') }}" class="brand">Watch Price Prediction</a>
+
+        <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks">
+            <i class="fas fa-bars"></i>
+            <span class="sr-only">Menu</span>
+        </button>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="{{ url_for('contents') }}">All Watches</a></li>
+            <li><a href="#discovery">Discovery</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#contact">Support</a></li>
+        </ul>
+
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <img src="{{ url_for('static', filename='images/main_wallpaper.png') }}" alt="" class="bg-texture" role="presentation">
+
+    <main id="main-content">
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-content">
+                <h1 id="hero-title">Watch Price Prediction: AI-Driven Valuations</h1>
+                <p>Explore the intersection of horological elegance and machine learning. Discover the performance and insights of our regression model built to estimate the value of prestigious timepieces.</p>
+                <div class="live-stats">
+                    <div class="stat">
+                        <span class="counter" data-target="50000">0</span>
+                        <span>Watches Displayed</span>
+                    </div>
+                    <div class="stat">
+                        <div class="counter-container">
+                            <span class="counter" data-target="8">0</span>
+                            <span>%</span>
+                        </div>
+                        <span>RMSE (Percentage)</span>
+                    </div>
+                    <div class="stat">
+                        <div class="counter-container">
+                            <span>0.</span><span class="counter" data-target="99">99</span>
+                        </div>
+                        <span>R²</span>
+                    </div>
+                </div>
+                <a href="#brands" class="cta-button">Explore Collection</a>
+            </div>
+        </section>
+
+        <div class="search-filter" id="searchFilter">
+            <input type="text" class="search-input" placeholder="Search brands and models..." id="searchInput">
+            <select class="filter-select" id="categoryFilter">
+                <option value="all">All Categories</option>
+                <option value="luxury">Luxury</option>
+                <option value="sports">Sports</option>
+                <option value="vintage">Vintage</option>
+                <option value="dress">Dress</option>
+            </select>
+            <select class="filter-select" id="priceFilter">
+                <option value="all">Any Price</option>
+                <option value="budget">Under $500</option>
+                <option value="mid-range">$500 - $2000</option>
+                <option value="luxury">$2000+</option>
+            </select>
+        </div>
+
+        <section class="slideshow-section" id="slideshow" aria-labelledby="slideshow-title">
+            <h2 id="slideshow-title" class="section-title">Featured Collections</h2>
+            <div class="slideshow-wrapper">
+                <div class="slides active">
+                    <img src="{{ url_for('static', filename='images/home-slider/slider_rolex.png') }}" alt="Premium Rolex watch collection">
+                    <div class="slides-caption">
+                        <h3>Rolex Collection</h3>
+                        <p>Swiss craftsmanship at its finest</p>
+                    </div>
+                </div>
+                <div class="slides">
+                    <img src="{{ url_for('static', filename='images/home-slider/omega_slider.png') }}" alt="Elegant Omega timepieces">
+                    <div class="slides-caption">
+                        <h3>Omega Masterpieces</h3>
+                        <p>Official timekeeper of NASA</p>
+                    </div>
+                </div>
+                <div class="slides">
+                    <img src="{{ url_for('static', filename='images/home-slider/seiko_slider.jpg') }}" alt="Innovative Seiko watches" class="card-image">
+                    <div class="slides-caption">
+                        <h3>Seiko Innovation</h3>
+                        <p>Japanese precision since 1881</p>
+                    </div>
+                </div>
+                <div class="slides">
+                    <img src="{{ url_for('static', filename='images/home-slider/patek_slider.jpg') }}" alt="Classic watch designs" class="card-image">
+                    <div class="slides-caption">
+                        <h3>Classic Timepieces</h3>
+                        <p>Timeless designs for generations</p>
+                    </div>
+                </div>
+
+                <div class="slideshow-controls">
+                    <button class="slide-btn prev-btn" aria-label="Previous slide">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="slide-btn next-btn" aria-label="Next slide">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="slideshow-dots" id="slideshowDots"></div>
+            </div>
+        </section>
+
+        <section class="brands-section" id="brands" aria-labelledby="brands-title">
+            <h2 id="brands-title" class="section-title">Watch Brands</h2>
+            <div class="container" id="brandsContainer">
+                <article class="card">
+                    <img src="{{ url_for('static', filename='images/home-watch-brands/rolex.png') }}" alt="Rolex luxury watches" class="card-image">
+                    <div class="card-content">
+                        <h3>Rolex</h3>
+                        <p>Swiss luxury watch manufacturer known for quality and prestige.</p>
+                        <div class="card-actions">
+                            <button class="like-btn" aria-label="Add to favorites">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="share-btn" aria-label="Share this brand">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+                        <button class="predict-btn" onclick="window.location.href = '{{ url_for('predict_page', brand='Rolex') }}'">
+                            Predict Price
+                        </button>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="{{ url_for('static', filename='images/home-watch-brands/omega.png') }}" alt="Omega precision timepieces" class="card-image">
+                    <div class="card-content">
+                        <h3>Omega</h3>
+                        <p>Official timekeeper of the Olympic Games and NASA space missions.</p>
+                        <div class="card-actions">
+                            <button class="like-btn" aria-label="Add to favorites">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="share-btn" aria-label="Share this brand">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+                        <button class="predict-btn" onclick="window.location.href = '{{ url_for('predict_page', brand='Omega') }}'">Predict Price</button>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="{{ url_for('static', filename='images/home-watch-brands/seiko.png') }}" alt="Seiko innovative watches" class="card-image">
+                    <div class="card-content">
+                        <h3>Seiko</h3>
+                        <p>Japanese innovation in watchmaking since 1881.</p>
+                        <div class="card-actions">
+                            <button class="like-btn" aria-label="Add to favorites">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="share-btn" aria-label="Share this brand">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+                        <button class="predict-btn" onclick="window.location.href = '{{ url_for('predict_page', brand='Seiko') }}'">Predict Price</button>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="{{ url_for('static', filename='images/home-watch-brands/casio.png') }}" alt="Casio digital watches" class="card-image">
+                    <div class="card-content">
+                        <h3>Casio</h3>
+                        <p>Revolutionary digital watches and G-Shock series.</p>
+                        <div class="card-actions">
+                            <button class="like-btn" aria-label="Add to favorites">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="share-btn" aria-label="Share this brand">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+                        <button class="predict-btn" onclick="window.location.href = '{{ url_for('predict_page', brand='Casio') }}'">Predict Price</button>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="{{ url_for('static', filename='images/home-watch-brands/citizen.jpg') }}" alt="Citizen eco-drive watches" class="card-image">
+                    <div class="card-content">
+                        <h3>Citizen</h3>
+                        <p>Eco-Drive technology powered by light. Classic one.</p>
+                        <div class="card-actions">
+                            <button class="like-btn" aria-label="Add to favorites">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="share-btn" aria-label="Share this brand">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+                        <button class="predict-btn" onclick="window.location.href = '{{ url_for('predict_page', brand='Citizen') }}'">Predict Price</button>
+                    </div>
+                </article>
+
+                <a href="{{ url_for('contents') }}" class="card more-card" aria-label="View more watch brands">
+                    <i class="fas fa-chevron-right"></i>
+                    <span>More Brands</span>
+                </a>
+            </div>
+        </section>
+
+        <section class="discovery-section" id="discovery" aria-labelledby="discovery-title">
+            <h2 id="discovery-title" class="section-title">Discover More</h2>
+            <div class="discovery-grid">
+                <div class="discovery-card">
+                    <img src="{{ url_for('static', filename='images/discovery/discovery1.jpg') }}" alt="Vintage Watch Collection">
+                    <div class="discovery-overlay">
+                        <h3>Vintage Collection</h3>
+                        <p>Timeless classics from past decades</p>
+                    </div>
+                </div>
+                <div class="discovery-card">
+                    <img src="{{ url_for('static', filename='images/discovery/discovery2.jpg') }}" alt="Limited Edition Watches">
+                    <div class="discovery-overlay">
+                        <h3>Limited Editions</h3>
+                        <p>Exclusive and rare timepieces</p>
+                    </div>
+                </div>
+                <div class="discovery-card">
+                    <img src="{{ url_for('static', filename='images/discovery/discovery3.jpg') }}" alt="Sports Watches">
+                    <div class="discovery-overlay">
+                        <h3>Sports Series</h3>
+                        <p>Built for adventure and performance</p>
+                    </div>
+                </div>
+                <div class="discovery-card">
+                    <img src="{{ url_for('static', filename='images/discovery/discovery4.jpg') }}" alt="Luxury Watch Care">
+                    <div class="discovery-overlay">
+                        <h3>Watch Care</h3>
+                        <p>Maintenance tips and guides</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+            <div class="footer-text">
+                <h2>This site is for educational purposes only. It is not designed for commercial use. It does not reflect actual prices in any way, and no action should be taken based on these results.</h2>
+                <h2>We are not responsible for any such action. Please remember that this is a project for entertainment and educational purposes only.</h2>
+
+                <div class="newsletter">
+                    <h3>Stay Updated with New Collections</h3>
+                    <form class="newsletter-form" id="newsletterForm">
+                        <input type="email" placeholder="Enter your email" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-icons">
+                <a href="https://github.com/enesgulerml" target="_blank" aria-label="GitHub profile">
+                    <img src="{{ url_for('static', filename='/images/github.png') }}" alt="GitHub">
+                </a>
+                <a href="https://www.kaggle.com/enesml" target="_blank" aria-label="Kaggle profile">
+                    <img src="{{ url_for('static', filename='images/kaggle.png') }}" alt="Kaggle">
+                </a>
+                <a href="https://medium.com/@ml.enesguler" target="_blank" aria-label="Medium blog">
+                    <img src="{{ url_for('static', filename='images/medium.png') }}" alt="Medium">
+                </a>
+                <a href="https://www.linkedin.com/in/enes-güler-8ab8a7346" target="_blank" aria-label="LinkedIn profile">
+                    <img src="{{ url_for('static', filename='images/linkedin.png') }}" alt="LinkedIn">
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Watch Price. Educational Project. All brand names are trademarks of their respective owners.</p>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+
+            setTimeout(() => {
+                if (loadingScreen && !loadingScreen.classList.contains('hidden')) {
+                    loadingScreen.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }
+            }, 2000);
+
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    if (loadingScreen) {
+                        loadingScreen.classList.add('hidden');
+                        document.body.style.overflow = 'auto';
+                    }
+                }, 500);
+            });
+
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            const hamburgerToggle = document.getElementById('hamburgerToggle');
+            const hamburgerMenu = document.querySelector('.hamburger-menu');
+            if (hamburgerToggle) {
+                hamburgerToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    hamburgerMenu.classList.toggle('active');
+                    hamburgerToggle.setAttribute('aria-expanded', hamburgerMenu.classList.contains('active'));
+                });
+                document.addEventListener('click', (e) => {
+                    if (!hamburgerMenu.contains(e.target)) {
+                        hamburgerMenu.classList.remove('active');
+                        hamburgerToggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                document.querySelectorAll('.hamburger-links a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        hamburgerMenu.classList.remove('active');
+                        hamburgerToggle.setAttribute('aria-expanded', 'false');
+                    });
+                });
+            }
+
+            const navToggle = document.getElementById('navToggle');
+            const navLinks = document.getElementById('navLinks');
+            if (navToggle) {
+                navToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                    navToggle.setAttribute('aria-expanded', navLinks.classList.contains('active'));
+                });
+                document.addEventListener('click', (e) => {
+                    if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                        navLinks.classList.remove('active');
+                        navToggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navLinks.classList.remove('active');
+                        navToggle.setAttribute('aria-expanded', 'false');
+                    });
+                });
+            }
+
+            const cards = document.querySelectorAll('.container .card:not(.more-card)');
+            cards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('button')) {
+                        return;
+                    }
+                    const brandName = this.querySelector('h3').textContent;
+                    window.location.href = `{{ url_for('predict_page') }}?brand=${encodeURIComponent(brandName)}`;
+                });
+            });
+
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.slides');
+            const dotsContainer = document.getElementById('slideshowDots');
+            let slideTimer;
+
+            if (slides.length > 0 && dotsContainer) {
+                slides.forEach((_, index) => {
+                    const dot = document.createElement('div');
+                    dot.classList.add('dot');
+                    if (index === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => {
+                        showSlide(index);
+                        resetTimer();
+                    });
+                    dotsContainer.appendChild(dot);
+                });
+
+                const dots = document.querySelectorAll('.dot');
+                function showSlide(n) {
+                    slides.forEach(slide => slide.classList.remove('active'));
+                    dots.forEach(dot => dot.classList.remove('active'));
+                    currentSlide = (n + slides.length) % slides.length;
+                    slides[currentSlide].classList.add('active');
+                    dots[currentSlide].classList.add('active');
+                }
+
+                function nextSlide() { showSlide(currentSlide + 1); }
+                function prevSlide() { showSlide(currentSlide - 1); }
+
+                function resetTimer() {
+                    clearInterval(slideTimer);
+                    slideTimer = setInterval(nextSlide, 5000);
+                }
+
+                document.querySelector('.next-btn').addEventListener('click', () => { nextSlide(); resetTimer(); });
+                document.querySelector('.prev-btn').addEventListener('click', () => { prevSlide(); resetTimer(); });
+
+                const slideshowWrapper = document.querySelector('.slideshow-wrapper');
+                slideshowWrapper.addEventListener('mouseenter', () => clearInterval(slideTimer));
+                slideshowWrapper.addEventListener('mouseleave', resetTimer);
+
+                showSlide(0);
+                resetTimer();
+            }
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                        if (entry.target.classList.contains('hero')) {
+                            document.querySelectorAll('.counter').forEach(counter => {
+                                const target = parseFloat(counter.dataset.target);
+                                let start = 0;
+                                const duration = 2000;
+                                const increment = target / (duration / 16);
+
+                                const timer = setInterval(() => {
+                                    start += increment;
+                                    if (start >= target) {
+                                        counter.textContent = target.toLocaleString();
+                                        clearInterval(timer);
+                                    } else {
+                                        counter.textContent = Math.floor(start).toLocaleString();
+                                    }
+                                }, 16);
+                            });
+                        }
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.hero, .search-filter, .slideshow-section, .brands-section, .discovery-section').forEach(section => {
+                if(section) observer.observe(section);
+            });
+
+            const backToTop = document.getElementById('backToTop');
+            if (backToTop) {
+                window.addEventListener('scroll', () => {
+                    backToTop.classList.toggle('visible', window.pageYOffset > 300);
+                });
+                backToTop.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+            document.querySelectorAll('.like-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.toggle('liked');
+                    const icon = this.querySelector('i');
+                    icon.classList.toggle('far');
+                    icon.classList.toggle('fas');
+                });
+            });
+
+            const searchInput = document.getElementById('searchInput');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const priceFilter = document.getElementById('priceFilter');
+            const cardsDesktop = document.querySelectorAll('.container .card:not(.more-card)');
+
+            function filterBrands() {
+                const searchTerm = searchInput.value.toLowerCase();
+                cardsDesktop.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    card.style.display = title.includes(searchTerm) ? 'block' : 'none';
+                });
+            }
+
+            if(searchInput) searchInput.addEventListener('input', filterBrands);
+            if(categoryFilter) categoryFilter.addEventListener('change', filterBrands);
+            if(priceFilter) priceFilter.addEventListener('change', filterBrands);
+
+            const newsletterForm = document.getElementById('newsletterForm');
+            if(newsletterForm) {
+                newsletterForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const email = e.target.querySelector('input').value;
+                    alert(`Thank you for subscribing with ${email}!`);
+                    e.target.reset();
+                });
+            }
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            if (themeToggle) {
+                const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                body.setAttribute('data-theme', savedTheme);
+                updateThemeIcon(savedTheme);
+
+                themeToggle.addEventListener('click', () => {
+                    const newTheme = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+                    body.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    updateThemeIcon(newTheme);
+                });
+
+                function updateThemeIcon(theme) {
+                    const icon = themeToggle.querySelector('i');
+                    icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                    if (!localStorage.getItem('theme')) {
+                        const newTheme = e.matches ? 'dark' : 'light';
+                        body.setAttribute('data-theme', newTheme);
+                        updateThemeIcon(newTheme);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

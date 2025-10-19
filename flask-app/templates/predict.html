@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Prediction | Watch Price</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ==========================================================================
+           1. CSS Variables and Themes
+           ========================================================================== */
+        :root {
+            --primary-color: #0a1f1c;
+            --primary-light: #1a3d38;
+            --secondary-color: #d4af37;
+            --text-light: #f8f8f8;
+            --text-dark: #2c2c2c;
+            --bg-light: #fefefe;
+            --card-bg: #ffffff;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.2);
+            --border-radius: 16px;
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #4A90E2;
+            --primary-light: #5A9EEE;
+            --secondary-color: #d4af37;
+            --text-light: #F0F0F0;
+            --text-dark: #F0F0F0;
+            --bg-light: #0D1117;
+            --card-bg: #161B22;
+            --section-bg: #111827;
+            --shadow: 0 8px 32px rgba(13, 17, 23, 0.4);
+            --shadow-hover: 0 16px 48px rgba(13, 17, 23, 0.5);
+        }
+
+        /* ==========================================================================
+           2. Base & Global Styles
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 100px auto 0;
+            padding: 2rem;
+        }
+
+        /* ==========================================================================
+           3. Navigation
+           ========================================================================== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(10, 31, 28, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 0 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        [data-theme="dark"] .navbar {
+            background: rgba(22, 27, 34, 0.95);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .brand {
+            color: var(--secondary-color);
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            text-decoration: none;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-btn {
+            background: none;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--text-light);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            transition: var(--transition);
+        }
+
+        .nav-btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--text-light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.8rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: rotate(180deg);
+        }
+
+        /* ==========================================================================
+           4. Page Sections & Components
+           ========================================================================== */
+        .watch-preview {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+        }
+
+        .watch-slider {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .slider-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slider-slide.active {
+            opacity: 1;
+        }
+
+        .slider-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slider-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .slider-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        .prediction-form {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+        }
+
+        .form-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-select,
+        .form-input {
+            padding: 12px 16px;
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .form-select:focus,
+        .form-input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-dark);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .prediction-result {
+            display: none;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .prediction-result.visible {
+            display: block;
+            border-color: var(--secondary-color);
+            animation: pulse 2s infinite;
+        }
+
+        .result-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .price-display {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin: 1rem 0;
+            font-family: 'Cinzel', serif;
+        }
+
+        .segment-display {
+            font-size: 1.2rem;
+            font-weight: 600;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+
+        .price-note {
+            opacity: 0.8;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                border-color: var(--secondary-color);
+            }
+            50% {
+                border-color: rgba(212, 175, 55, 0.5);
+            }
+        }
+
+        /* ==========================================================================
+           5. Responsive Design
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .form-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .navbar {
+                padding: 0 1rem;
+            }
+            .container {
+                padding: 1rem;
+                margin-top: 80px;
+            }
+            .prediction-form,
+            .prediction-result {
+                padding: 2rem;
+            }
+            .brand {
+                position: static;
+                transform: none;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+
+<body data-theme="light">
+    <nav class="navbar">
+        <button class="nav-btn" onclick="window.location.href='{{ url_for('home') }}'"><i class="fas fa-arrow-left"></i> Home</button>
+        <a href="{{ url_for('home') }}" class="brand">Watch Price Prediction</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
+    </nav>
+
+    <div class="container">
+        <section class="watch-preview">
+            <div class="watch-slider" id="watchSlider">
+                <div class="slider-controls" id="sliderControls"></div>
+            </div>
+        </section>
+
+        <section class="prediction-form">
+            <h2 class="form-title">Enter Watch Specifications</h2>
+            <form id="predictionForm">
+                <div class="form-grid">
+                    <div class="form-group"><label for="Brand" class="form-label">Brand</label><select id="Brand" name="Brand" class="form-select" required><option value="">Select Brand</option><option>Audemars Piguet</option><option>Breitling</option><option>Bulova</option><option>Cartier</option><option>Casio</option><option>Casio G-Shock</option><option>Citizen</option><option>Daniel Wellington</option><option>Fossil</option><option>Girard-Perregaux</option><option>Hamilton</option><option>Hublot</option><option>Invicta</option><option>Longines</option><option>Maurice Lacroix</option><option>Michael Kors</option><option>Movado</option><option>Orient</option><option>Panerai</option><option>Patek Philippe</option><option>Rado</option><option>Rolex</option><option>Seiko</option><option>Skagen</option><option>Swatch</option><option>Tag Heuer</option><option>Timex</option><option>Tissot</option><option>Vacheron Constantin</option></select></div>
+                    <div class="form-group"><label for="Model" class="form-label">Model</label><select id="Model" name="Model" class="form-select" required><option value="">Select Model</option><option>1966</option><option>5 Sports</option><option>Aerospace</option><option>Aikon</option><option>Allied Coastline</option><option>American Classic</option><option>Ancher</option><option>Aquanaut</option><option>Aquaracer</option><option>Astron</option><option>Autavia</option><option>Automatic</option><option>Avenger</option><option>Aviator</option><option>Baignoire</option><option>Ballon Bleu</option><option>Bambino</option><option>Big Bang</option><option>Big Bold</option><option>Blue Angels</option><option>Bold</option><option>Bolt</option><option>Bradshaw</option><option>Bridges</option><option>Broadway</option><option>Calatrava</option><option>Captain Cook</option><option>Carrera</option><option>Cat's Eye</option><option>Centrix</option><option>Ceramica</option><option>Chrono</option><option>Chrono Hawk</option><option>Chronomaster</option><option>Chronomat</option><option>Classic</option><option>Classic Bristol</option><option>Classic Fusion</option><option>Classic Sheffield</option><option>Classic St Mawes</option><option>Clé</option><option>Code 11.59</option><option>Collection</option><option>Complications</option><option>Concept</option><option>Connect</option><option>Connected</option><option>Conquest</option><option>Curv</option><option>DW-5600</option><option>Darci</option><option>Databank</option><option>Datejust</option><option>Daytona</option><option>Defender</option><option>DolceVita</option><option>Drive de Cartier</option><option>Due</option><option>Eco-Drive</option><option>Edge</option><option>Edifice</option><option>Edward Piguet</option><option>Egiziano</option><option>Eliros</option><option>Endurance Pro</option><option>Esperanza</option><option>Everytime</option><option>Expedition</option><option>Explorer</option><option>FB-01</option><option>Fairfield</option><option>Falster</option><option>Fiaba</option><option>Fiftysix</option><option>Flagship</option><option>Florence</option><option>Formula 1</option><option>Frogman</option><option>G-Steel</option><option>GA-2100</option><option>GMT</option><option>GMT-Master II</option><option>Garrett</option><option>Gent</option><option>Gentleman</option><option>Golden Ellipse</option><option>Golden Horse</option><option>Gondola</option><option>Grand Complications</option><option>Grant</option><option>Gravitymaster</option><option>Hagen</option><option>Harmony</option><option>Heritage</option><option>Heritage Visodate</option><option>Historiques</option><option>Holst</option><option>HydroConquest</option><option>HyperChrome</option><option>Iconic Link</option><option>Integral</option><option>Ironman</option><option>Irony</option><option>Jacqueline</option><option>Jazzmaster</option><option>Jorn</option><option>Jules Audemars</option><option>Kamasu</option><option>Khaki Aviation</option><option>Khaki Field</option><option>Khaki Navy</option><option>Kinetic</option><option>Kristoffer</option><option>Laureato</option><option>Le Locle</option><option>Lennox</option><option>Les Classiques</option><option>Lexington</option><option>Lineage</option><option>Link</option><option>Lukia</option><option>Luminor</option><option>Lupah</option><option>MP Collection</option><option>MT-G</option><option>Machine</option><option>Mako II</option><option>Malte</option><option>Mare Nostrum</option><option>Marine Star</option><option>Marlin</option><option>Master Collection</option><option>Masterpiece</option><option>Melbye</option><option>Millenary</option><option>Millennia</option><option>Miros</option><option>Monaco</option><option>Monarch</option><option>Mudmaster</option><option>Museum Classic</option><option>Nautilus</option><option>Navi Harbor</option><option>Navitimer</option><option>Neutra</option><option>New Gent</option><option>Oceanus</option><option>Originals</option><option>Overseas</option><option>Oyster Perpetual</option><option>PRX</option><option>Panthère</option><option>Parker</option><option>Pasha</option><option>Patrimony</option><option>Petite Evergold</option><option>Petite Melrose</option><option>Petite Sterling</option><option>Phase de Lune</option><option>Pontos</option><option>Precisionist</option><option>Premier</option><option>Presage</option><option>Pro Diver</option><option>Pro Trek</option><option>Promaster</option><option>Prospex</option><option>Pyper</option><option>Quadro</option><option>Quartz</option><option>Radiomir</option><option>Rangeman</option><option>Ray II</option><option>Reserve</option><option>Royal Oak</option><option>Royal Oak Offshore</option><option>Rubaiyat</option><option>Runway</option><option>Russian Diver</option><option>SE Pilot</option><option>Sang Bleu</option><option>Santos</option><option>Satellite Wave</option><option>Scarlette</option><option>Sea Hawk</option><option>Seastar</option><option>Signatur</option><option>Sistem51</option><option>Skin</option><option>Sky-Dweller</option><option>Slim Runway</option><option>Spirit</option><option>Spirit of Big Bang</option><option>Spirit of Liberty</option><option>Square Bang</option><option>Star</option><option>Subaqua</option><option>Submariner</option><option>Submersible</option><option>Sun and Moon</option><option>Superocean</option><option>Surveyor</option><option>Symphonette</option><option>T-Touch</option><option>Tank</option><option>Titanium</option><option>Top Time</option><option>Tourbillon</option><option>Townsman</option><option>Tradition</option><option>Traditionnelle</option><option>Traveller</option><option>True Square</option><option>Twenty~4</option><option>Ultra Slim</option><option>Unico</option><option>Velatura</option><option>Venom</option><option>Ventura</option><option>Vintage</option><option>Vintage 1945</option><option>Vizio</option><option>Waterbury</option><option>Weekender</option><option>Yacht-Master</option><option>Égérie</option></select></div>
+                    <div class="form-group"><label for="Gender" class="form-label">Gender</label><select id="Gender" name="Gender" class="form-select" required><option value="">Select Gender</option><option>Female</option><option>Male</option><option>Unisex</option></select></div>
+                    <div class="form-group"><label for="Case Color" class="form-label">Case Color</label><select id="Case Color" name="Case Color" class="form-select" required><option value="">Select Case Color</option><option>Black</option><option>Blue</option><option>Gold</option><option>Rose Gold</option><option>Silver</option><option>White</option></select></div>
+                    <div class="form-group"><label for="Glass Shape" class="form-label">Glass Shape</label><select id="Glass Shape" name="Glass Shape" class="form-select" required><option value="">Select Glass Shape</option><option>Domed</option><option>Flat</option><option>Round</option></select></div>
+                    <div class="form-group"><label for="Origin" class="form-label">Origin</label><select id="Origin" name="Origin" class="form-select" required><option value="">Select Origin</option><option>CH</option><option>CN</option><option>DE</option><option>DK</option><option>FR</option><option>IT</option><option>JP</option><option>KR</option><option>SE</option><option>US</option></select></div>
+                    <div class="form-group"><label for="Case Material" class="form-label">Case Material</label><select id="Case Material" name="Case Material" class="form-select" required><option value="">Select Case Material</option><option>Alloy</option><option>Steel</option><option>Titanium</option></select></div>
+                    <div class="form-group"><label for="Additional Feature" class="form-label">Additional Feature</label><select id="Additional Feature" name="Additional Feature" class="form-select" required><option value="">Select Feature</option><option>None</option><option>Alarm</option><option>Calendar</option><option>Chronograph</option><option>Luminous</option></select></div>
+                    <div class="form-group"><label for="Strap Color" class="form-label">Strap Color</label><select id="Strap Color" name="Strap Color" class="form-select" required><option value="">Select Strap Color</option><option>Black</option><option>Blue</option><option>Brown</option><option>Gold</option><option>Silver</option><option>White</option></select></div>
+                    <div class="form-group"><label for="Strap Material" class="form-label">Strap Material</label><select id="Strap Material" name="Strap Material" class="form-select" required><option value="">Select Strap Material</option><option>Leather</option><option>Metal</option><option>Nylon</option><option>Silicone</option></select></div>
+                    <div class="form-group"><label for="Mechanism" class="form-label">Mechanism</label><select id="Mechanism" name="Mechanism" class="form-select" required><option value="">Select Mechanism</option><option>Automatic</option><option>Mechanical</option><option>Quartz</option></select></div>
+                    <div class="form-group"><label for="Glass Type" class="form-label">Glass Type</label><select id="Glass Type" name="Glass Type" class="form-select" required><option value="">Select Glass Type</option><option>Acrylic</option><option>Mineral</option><option>Sapphire</option></select></div>
+                    <div class="form-group"><label for="Dial Color" class="form-label">Dial Color</label><select id="Dial Color" name="Dial Color" class="form-select" required><option value="">Select Dial Color</option><option>Black</option><option>Blue</option><option>Gold</option><option>Silver</option><option>White</option></select></div>
+                    <div class="form-group"><label for="Case Diameter" class="form-label">Case Diameter (mm)</label><input type="number" id="Case Diameter" name="Case Diameter" class="form-input" placeholder="e.g., 42" step="0.1" required></div>
+                    <div class="form-group"><label for="Water Resistance" class="form-label">Water Resistance (m)</label><input type="number" id="Water Resistance" name="Water Resistance" class="form-input" placeholder="e.g., 50" step="1" required></div>
+                    <div class="form-group"><label for="Warranty (Years)" class="form-label">Warranty (Years)</label><input type="number" id="Warranty (Years)" name="Warranty (Years)" class="form-input" placeholder="e.g., 2" step="1" required></div>
+                    <div class="form-group"><label for="Weight (g)" class="form-label">Weight (g)</label><input type="number" id="Weight (g)" name="Weight (g)" class="form-input" placeholder="e.g., 150" step="0.1" required></div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()"><i class="fas fa-redo"></i> Reset</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-calculator"></i> Calculate Price</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="prediction-result" id="predictionResult">
+            <h2 class="result-title">Estimated Value</h2>
+            <div class="price-display" id="priceDisplay">-</div>
+            <div class="segment-display" id="segmentDisplay"></div>
+            <p class="price-note">* This is an estimated market value based on the provided specifications.</p>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const watchImages = [`{{ url_for('static', filename='images/predict_slider_1.jpg') }}`, `{{ url_for('static', filename='images/predict_slider_2.jpg') }}`, `{{ url_for('static', filename='images/predict_slider_3.jpg') }}`, `{{ url_for('static', filename='images/predict_slider_4.jpg') }}`, `{{ url_for('static', filename='images/predict_slider_5.jpg') }}`, `{{ url_for('static', filename='images/predict_slider_6.jpg') }}`];
+            let currentSlide = 0;
+
+            function initializeWatchSlider() {
+                const slider = document.getElementById('watchSlider');
+                const controls = document.getElementById('sliderControls');
+                if (!slider || slider.dataset.initialized) return;
+                slider.dataset.initialized = 'true';
+
+                watchImages.forEach((image, index) => {
+                    const slide = document.createElement('div');
+                    slide.className = `slider-slide ${index === 0 ? 'active' : ''}`;
+                    const img = document.createElement('img');
+                    img.src = image;
+                    img.alt = `Watch Example ${index + 1}`;
+                    img.onerror = () => { img.src = `{{ url_for('static', filename='images/watch_placeholder.jpg') }}`; };
+                    slide.appendChild(img);
+                    slider.insertBefore(slide, controls);
+
+                    const dot = document.createElement('button');
+                    dot.className = `slider-dot ${index === 0 ? 'active' : ''}`;
+                    dot.addEventListener('click', () => showSlide(index));
+                    controls.appendChild(dot);
+                });
+                setInterval(() => showSlide((currentSlide + 1) % watchImages.length), 4000);
+            }
+
+            function showSlide(index) {
+                const slides = document.querySelectorAll('.slider-slide');
+                const dots = document.querySelectorAll('.slider-dot');
+                if (slides.length > index) {
+                    slides.forEach(s => s.classList.remove('active'));
+                    slides[index].classList.add('active');
+                }
+                if (dots.length > index) {
+                    dots.forEach(d => d.classList.remove('active'));
+                    dots[index].classList.add('active');
+                }
+                currentSlide = index;
+            }
+
+            const API_URL = "{{ url_for('predict_api') }}";
+            const form = document.getElementById('predictionForm');
+            const resultBox = document.getElementById('predictionResult');
+            const priceDisplay = document.getElementById('priceDisplay');
+            const segmentDisplay = document.getElementById('segmentDisplay');
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                priceDisplay.textContent = "Calculating...";
+                segmentDisplay.textContent = "";
+                resultBox.classList.remove('visible');
+
+                const formData = new FormData(form);
+                const payload = Object.fromEntries(formData.entries());
+
+                let allValid = true;
+                for (let key in payload) {
+                    if (!payload[key]) {
+                        alert(`Please fill in all fields. Missing: ${key}`);
+                        allValid = false;
+                        break;
+                    }
+                }
+
+                if (!allValid) {
+                    priceDisplay.textContent = "-";
+                    return;
+                }
+
+                try {
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'API Error');
+
+                    priceDisplay.textContent = new Intl.NumberFormat('en-US', { style: 'currency', currency: data.currency || 'USD' }).format(data.predicted_price);
+                    segmentDisplay.textContent = `${data.segment} Segment`;
+                    resultBox.classList.add('visible');
+                    resultBox.scrollIntoView({ behavior: 'smooth' });
+
+                } catch (error) {
+                    console.error("API Error:", error);
+                    priceDisplay.textContent = "Error";
+                    segmentDisplay.textContent = "Could not get prediction.";
+                    resultBox.classList.add('visible');
+                    alert(`Connection Error: ${error.message}`);
+                }
+            });
+
+            initializeWatchSlider();
+        });
+
+        function resetForm() {
+            document.getElementById('predictionForm').reset();
+            document.getElementById('predictionResult').classList.remove('visible');
+            document.getElementById('priceDisplay').textContent = "-";
+            document.getElementById('segmentDisplay').textContent = "";
+        }
+
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        body.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+        themeToggle.addEventListener('click', () => {
+            const newTheme = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+        function updateThemeIcon(theme) { themeToggle.querySelector('i').className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon'; }
+    </script>
+</body>
+</html>

@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="All Watch Brands - Explore complete collection of luxury watch brands">
+    <title>All Watch Brands | Watch Price</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Light Theme (Emerald) */
+            --primary-color: #0a1f1c;
+            --primary-light: #1a3d38;
+            --secondary-color: #d4af37;
+            --accent-color: #8b4513;
+            --text-light: #f8f8f8;
+            --text-dark: #2c2c2c;
+            --bg-light: #fefefe;
+            --bg-dark: #1a1a1a;
+            --card-bg: #ffffff;
+            --section-bg: #f8f9fa;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.2);
+            --border-radius: 16px;
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --gold-gradient: linear-gradient(135deg, #d4af37, #f9e076, #d4af37);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #4A90E2;
+            --primary-light: #5A9EEE;
+            --secondary-color: #FFD700;
+            --text-light: #F0F0F0;
+            --text-dark: #F0F0F0;
+            --bg-light: #0D1117;
+            --card-bg: #161B22;
+            --section-bg: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+        /* --- Navigation --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(10, 31, 28, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 0 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .navbar {
+            background: rgba(22, 27, 34, 0.95);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .brand {
+            color: #d4af37;
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            text-decoration: none;
+            transition: var(--transition);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .brand:hover {
+            transform: translateX(-50%) scale(1.05);
+            color: #f9e076;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            transition: var(--transition);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .back-btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateX(-5px);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.8rem;
+            border-radius: 50%;
+            transition: var(--transition);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: rotate(180deg);
+        }
+
+        /* --- Main Layout --- */
+        .container {
+            max-width: 1400px;
+            margin: 100px auto 0;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            overflow-y: auto;
+        }
+
+        .sidebar-title {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+            font-weight: 600;
+            text-align: center;
+            font-family: 'Cinzel', serif;
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-item {
+            margin-bottom: 1rem;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: var(--transition);
+            font-weight: 600;
+            cursor: pointer;
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .category-header:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateX(5px);
+        }
+
+        .category-header.active {
+            background: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        .category-count {
+            background: var(--secondary-color);
+            color: var(--text-dark);
+            padding: 0.3rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .brand-sublist {
+            list-style: none;
+            margin-top: 0.5rem;
+            padding-left: 1rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .brand-sublist.show {
+            max-height: 500px;
+        }
+
+        .brand-sublist li {
+            margin-bottom: 0.3rem;
+        }
+
+        .brand-sublist a {
+            display: block;
+            padding: 0.7rem 1rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .brand-sublist a:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateX(3px);
+        }
+
+        /* --- Brands Grid --- */
+        .brands-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .category-section {
+            margin-bottom: 3rem;
+        }
+
+        .category-title {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            font-family: 'Cinzel', serif;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .brand-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: fit-content;
+        }
+
+        .brand-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+            z-index: 1;
+        }
+
+        .brand-card:hover::before {
+            left: 100%;
+        }
+
+        .brand-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .brand-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .brand-card:hover .brand-image {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .brand-info {
+            padding: 1.5rem;
+            position: relative;
+            z-index: 2;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-size: 1.4rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-family: 'Cinzel', serif;
+        }
+
+        .brand-category {
+            color: var(--text-dark);
+            opacity: 0.8;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .brand-story {
+            color: var(--text-dark);
+            opacity: 0.7;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .view-models-btn {
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: auto;
+        }
+
+        .view-models-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        /* --- Back to Top --- */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-light);
+            transform: translateY(-3px);
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 1200px) {
+            .brands-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+                height: auto;
+            }
+
+            .brands-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+                margin-top: 80px;
+            }
+
+            .brands-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .brand {
+                position: static;
+                transform: none;
+                margin: 0 1rem;
+            }
+
+            .brand:hover {
+                transform: scale(1.05);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .brands-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 1rem;
+            }
+
+            .brand {
+                order: 1;
+                margin: 0.5rem 0;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* --- Loading Animation --- */
+        .brand-card {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <nav class="navbar">
+        <button class="back-btn" onclick="window.location.href='{{ url_for('home') }}'">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </button>
+
+        <a href="{{ url_for('contents') }}" class="brand">Watch Price Prediction</a>
+
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h2 class="sidebar-title">Categories</h2>
+            <ul class="category-list" id="categoryList">
+                </ul>
+        </aside>
+
+        <main id="brandsContainer">
+            </main>
+    </div>
+
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script>
+        const brands = [
+            { name: 'Rolex', category: 'swiss-luxury', categoryName: 'Swiss Luxury', image: `{{ url_for('static', filename='images/rolex.jpg') }}`, story: 'Founded in 1905, Rolex revolutionized watchmaking with the first waterproof wristwatch. Synonymous with prestige and precision.' },
+            { name: 'Omega', category: 'swiss-luxury', categoryName: 'Swiss Luxury', image: `{{ url_for('static', filename='images/omega2.jpg') }}`, story: 'Official timekeeper of NASA and Olympic Games. Omega Speedmaster was the first watch on the moon.' },
+            { name: 'Patek Philippe', category: 'swiss-luxury', categoryName: 'Swiss Luxury', image: `{{ url_for('static', filename='images/patek.jpg') }}`, story: 'The pinnacle of Swiss watchmaking. Family-owned since 1839, creating watches for future generations.' },
+            { name: 'Audemars Piguet', category: 'swiss-luxury', categoryName: 'Swiss Luxury', image: `{{ url_for('static', filename='images/audemars.jpg') }}`, story: 'Family-owned manufacture that created the iconic Royal Oak. Pushing boundaries with avant-garde designs.' },
+            { name: 'Vacheron Constantin', category: 'swiss-luxury', categoryName: 'Swiss Luxury', image: `{{ url_for('static', filename='images/vacheron.jpg') }}`, story: 'World\'s oldest watch manufacturer since 1755. Exemplifies Geneva seal quality with exceptional complications.' },
+            { name: 'Tag Heuer', category: 'sports-professional', categoryName: 'Sports & Professional', image: `{{ url_for('static', filename='images/tag.jpg') }}`, story: 'Born from motor racing heritage. Official timekeeper of Formula 1, known for precision timing.' },
+            { name: 'Breitling', category: 'sports-professional', categoryName: 'Sports & Professional', image: `{{ url_for('static', filename='images/breitling.jpg') }}`, story: 'Instrument watches for professionals. Invented the modern chronograph. Synonymous with aviation.' },
+            { name: 'Panerai', category: 'sports-professional', categoryName: 'Sports & Professional', image: `{{ url_for('static', filename='images/panerai.jpg') }}`, story: 'Florentine brand that supplied diving instruments to the Italian Navy. Iconic cushion cases.' },
+            { name: 'Casio G-Shock', category: 'sports-professional', categoryName: 'Sports & Professional', image: `{{ url_for('static', filename='images/gshock.jpg') }}`, story: 'Born from the concept of creating an unbreakable watch. The toughest watches ever made.' },
+            { name: 'Seiko', category: 'japanese-innovation', categoryName: 'Japanese Innovation', image: `{{ url_for('static', filename='images/seiko.jpg') }}`, story: 'Since 1881, Seiko has pioneered quartz technology and Spring Drive. Blends tradition with innovation.' },
+            { name: 'Citizen', category: 'japanese-innovation', categoryName: 'Japanese Innovation', image: `{{ url_for('static', filename='images/citizen.jpg') }}`, story: 'Pioneer of light-powered Eco-Drive technology. Combines Japanese precision with environmental consciousness.' },
+            { name: 'Casio', category: 'japanese-innovation', categoryName: 'Japanese Innovation', image: `{{ url_for('static', filename='images/casio.jpg') }}`, story: 'Revolutionized timekeeping with the first digital watch. Continues to redefine digital watch capabilities.' },
+            { name: 'Orient', category: 'japanese-innovation', categoryName: 'Japanese Innovation', image: `{{ url_for('static', filename='images/orient.jpg') }}`, story: 'Japanese manufacture producing in-house mechanical movements since 1950. Exceptional value.' },
+            { name: 'Michael Kors', category: 'fashion-lifestyle', categoryName: 'Fashion & Lifestyle', image: `{{ url_for('static', filename='images/micheal.jpg') }}`, story: 'Jet-set luxury meets contemporary fashion. Known for glamorous, oversized designs.' },
+            { name: 'Daniel Wellington', category: 'fashion-lifestyle', categoryName: 'Fashion & Lifestyle', image: `{{ url_for('static', filename='images/daniel.jpg') }}`, story: 'Revolutionized accessible luxury with minimalist designs and interchangeable straps.' },
+            { name: 'Fossil', category: 'fashion-lifestyle', categoryName: 'Fashion & Lifestyle', image: `{{ url_for('static', filename='images/fossil.jpg') }}`, story: 'Inspired by vintage Americana and retro creativity. Known for quality leather straps.' },
+            { name: 'Skagen', category: 'fashion-lifestyle', categoryName: 'Fashion & Lifestyle', image: `{{ url_for('static', filename='images/skagen.jpg') }}`, story: 'Danish design inspired by the coastal town of Skagen. Ultra-thin cases and minimalist dials.' },
+            { name: 'Timex', category: 'affordable-quality', categoryName: 'Affordable Quality', image: `{{ url_for('static', filename='images/timex.jpg') }}`, story: 'Democratized quality timekeeping with durable, affordable watches. Indiglo night-light revolutionized readability.' },
+            { name: 'Invicta', category: 'affordable-quality', categoryName: 'Affordable Quality', image: `{{ url_for('static', filename='images/invicta.jpg') }}`, story: 'Latin for "invincible," offers dramatic, oversized watches with exceptional value and bold styling.' },
+            { name: 'Bulova', category: 'affordable-quality', categoryName: 'Affordable Quality', image: `{{ url_for('static', filename='images/bulova.jpg') }}`, story: 'American icon since 1875, famous for the Accutron - first electronic watch.' },
+            { name: 'Swatch', category: 'affordable-quality', categoryName: 'Affordable Quality', image: `{{ url_for('static', filename='images/swatch.jpg') }}`, story: 'Saved Swiss watchmaking with colorful, affordable quartz watches. Brought fun to timekeeping.' },
+            { name: 'Longines', category: 'heritage-classic', categoryName: 'Heritage & Classic', image: `{{ url_for('static', filename='images/longines.jpg') }}`, story: 'Swiss brand with aviation and sports timing heritage. Known for elegant, timeless designs.' },
+            { name: 'Tissot', category: 'heritage-classic', categoryName: 'Heritage & Classic', image: `{{ url_for('static', filename='images/tissot.jpg') }}`, story: 'Pioneer of tactile technology with T-Touch watches. Swiss quality with innovative features.' },
+            { name: 'Hamilton', category: 'heritage-classic', categoryName: 'Heritage & Classic', image: `{{ url_for('static', filename='images/hamilton.jpg') }}`, story: 'American classic with rich Hollywood heritage. Known for rugged field watches and vintage designs.' },
+            { name: 'Movado', category: 'heritage-classic', categoryName: 'Heritage & Classic', image: `{{ url_for('static', filename='images/movado.jpg') }}`, story: 'Famous for the Museum dial - single dot at 12 o\'clock. Modernist design inspired by MoMA.' },
+            { name: 'Hublot', category: 'innovative-modern', categoryName: 'Innovative & Modern', image: `{{ url_for('static', filename='images/hublot.jpg') }}`, story: 'Revolutionized luxury watches with the "Art of Fusion" - combining unexpected materials.' },
+            { name: 'Cartier', category: 'innovative-modern', categoryName: 'Innovative & Modern', image: `{{ url_for('static', filename='images/cartier.jpg') }}`, story: 'The "Jeweler of Kings" created the first modern wristwatch. Blends horology with haute jewelry.' },
+            { name: 'Rado', category: 'innovative-modern', categoryName: 'Innovative & Modern', image: `{{ url_for('static', filename='images/rado.jpg') }}`, story: 'Pioneer in high-tech ceramics and scratch-resistant materials. Created the first scratchproof watch.' },
+            { name: 'Girard-Perregaux', category: 'innovative-modern', categoryName: 'Innovative & Modern', image: `{{ url_for('static', filename='images/girard.jpg') }}`, story: 'Swiss manufacture with iconic Three Gold Bridges design. Exceptional complications since 1791.' },
+            { name: 'Maurice Lacroix', category: 'innovative-modern', categoryName: 'Innovative & Modern', image: `{{ url_for('static', filename='images/lacroix.jpg') }}`, story: 'Modern Swiss brand known for innovative designs and exceptional finishing. Contemporary aesthetics.' }
+        ];
+
+        const categories = [
+            { id: 'swiss-luxury', name: 'Swiss Luxury', description: 'The pinnacle of Swiss watchmaking excellence' },
+            { id: 'sports-professional', name: 'Sports & Professional', description: 'Built for adventure, aviation, and extreme conditions' },
+            { id: 'japanese-innovation', name: 'Japanese Innovation', description: 'Cutting-edge technology and precision engineering' },
+            { id: 'fashion-lifestyle', name: 'Fashion & Lifestyle', description: 'Style and elegance for everyday wear' },
+            { id: 'affordable-quality', name: 'Affordable Quality', description: 'Exceptional value without compromising quality' },
+            { id: 'heritage-classic', name: 'Heritage & Classic', description: 'Timeless designs with rich history' },
+            { id: 'innovative-modern', name: 'Innovative & Modern', description: 'Pushing boundaries with contemporary designs' }
+        ];
+
+        // *** DÜZELTME: Bu değişkeni global kapsama taşıdık ***
+        const predictBaseUrl = `{{ url_for('predict_page') }}`;
+
+        function initializePage() {
+            populateCategoryList();
+            populateBrandsGrid();
+            setupEventListeners();
+        }
+
+        function populateCategoryList() {
+            const categoryList = document.getElementById('categoryList');
+            categoryList.innerHTML = '';
+            categories.forEach(category => {
+                const categoryBrands = brands.filter(brand => brand.category === category.id);
+                const listItem = document.createElement('li');
+                listItem.className = 'category-item';
+                listItem.innerHTML = `
+                    <div class="category-header" data-category="${category.id}">
+                        <span>${category.name}</span>
+                        <span class="category-count">${categoryBrands.length}</span>
+                    </div>
+                    <ul class="brand-sublist" id="sublist-${category.id}">
+                        ${categoryBrands.map(brand => `<li><a href="#${brand.name.toLowerCase().replace(/\s+/g, '-')}">${brand.name}</a></li>`).join('')}
+                    </ul>
+                `;
+                categoryList.appendChild(listItem);
+            });
+        }
+
+        function populateBrandsGrid() {
+            const brandsContainer = document.getElementById('brandsContainer');
+            brandsContainer.innerHTML = '';
+            categories.forEach((category, categoryIndex) => {
+                const categoryBrands = brands.filter(brand => brand.category === category.id);
+                if (categoryBrands.length > 0) {
+                    const section = document.createElement('section');
+                    section.className = 'category-section';
+                    section.id = `category-${category.id}`;
+                    section.innerHTML = `
+                        <h2 class="category-title">${category.name}</h2>
+                        <div class="brands-grid" id="grid-${category.id}">
+                            ${categoryBrands.map((brand, index) => `
+                                <div class="brand-card" id="${brand.name.toLowerCase().replace(/\s+/g, '-')}" style="animation-delay: ${(index * 0.05)}s">
+                                    <img src="${brand.image}" alt="${brand.name}" class="brand-image">
+                                    <div class="brand-info">
+                                        <h3 class="brand-name">${brand.name}</h3>
+                                        <p class="brand-category">${category.name}</p>
+                                        <p class="brand-story">${brand.story}</p>
+                                        <button class="view-models-btn" onclick="window.location.href = predictBaseUrl + '?brand=' + encodeURIComponent('${brand.name}')">
+                                            Predict Price
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    brandsContainer.appendChild(section);
+                }
+            });
+        }
+
+        function setupEventListeners() {
+            document.querySelectorAll('.category-header').forEach(header => {
+                header.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const sublist = this.nextElementSibling;
+                    sublist.classList.toggle('show');
+                });
+            });
+
+            const backToTop = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                backToTop.classList.toggle('visible', window.pageYOffset > 300);
+            });
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            document.querySelectorAll('.brand-sublist a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(link.getAttribute('href'));
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        }
+
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        body.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const newTheme = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            const icon = themeToggle.querySelector('i');
+            icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>
