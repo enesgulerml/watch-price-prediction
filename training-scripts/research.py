@@ -12,34 +12,6 @@ data = pd.read_csv("data/watch_price_20250910.csv")
 
 df = data.copy()
 
-df["Price (USD)"].mean()
-## GEMINI ###
-
-print("--- 1. SÜTUN İSİMLERİ ---")
-try:
-    features = df.drop('Price', axis=1).columns.tolist()
-    print(features)
-except KeyError:
-    print("Not: 'Price' adında bir sütun bulunamadı. Tüm sütunlar listeleniyor:")
-    features = df.columns.tolist()
-    print(features)
-
-print("\n--- 2. KATEGORİK SÜTUNLARIN BENZERSİZ DEĞERLERİ ---")
-categorical_features = df.select_dtypes(include=['object', 'bool']).columns.tolist()
-
-for col in categorical_features:
-    if col == 'Price':
-        continue
-
-    print(f"\n----- Sütun: {col} -----")
-    try:
-        unique_values = sorted(df[col].dropna().unique().tolist())
-        print(unique_values)
-    except TypeError:
-        print(f"Sıralanamadı, orjinal sıra: {df[col].dropna().unique().tolist()}")
-
-print("\n--- KOD SONU ---")
-
 # EDA ##
 check_data(df, target="Price (USD)")
 sns.histplot(data=df, x="Price (USD)")
