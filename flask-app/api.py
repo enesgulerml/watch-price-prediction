@@ -63,8 +63,11 @@ class GroupBasedImputer(BaseEstimator, TransformerMixin):
 
 
 # --- GLOBAL VARIABLES & HELPERS ---
-MODEL_PATH = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "models", "optimized_watch_price_xgb_pipeline.joblib"))
+if os.environ.get("RUNNING_IN_DOCKER"):
+    MODEL_PATH = "/models/optimized_watch_price_xgb_pipeline.joblib"
+else:
+    MODEL_PATH = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "models", "optimized_watch_price_xgb_pipeline.joblib"))
 PIPELINE = None
 
 
@@ -141,4 +144,4 @@ def predict_api():
 # --- UYGULAMA BAŞLATMA ---
 if __name__ == '__main__':
     load_model()
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', debug=True, port=5000)
