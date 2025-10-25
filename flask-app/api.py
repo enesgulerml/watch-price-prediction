@@ -6,7 +6,6 @@ from flask import Flask, request, jsonify, render_template
 from sklearn.base import BaseEstimator, TransformerMixin
 
 
-# Modelinizin bu özel dönüştürücülere ihtiyaç duyduğu için bu sınıflar kalmalıdır.
 class GroupBasedImputer(BaseEstimator, TransformerMixin):
     def __init__(self):
         self.imputation_maps = {}
@@ -92,7 +91,7 @@ def get_price_segment(price: float) -> str:
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
 
-# --- SİTE SAYFALARI ---
+# --- WEB PAGES ---
 @app.route('/')
 def home(): return render_template('home.html')
 
@@ -105,7 +104,7 @@ def contents(): return render_template('contents.html')
 def predict_page(): return render_template('predict.html')
 
 
-# --- TAHMİN API ENDPOINT'İ ---
+# --- PREDICTION API ENDPOINT ---
 @app.route('/predict_api', methods=['POST'])
 def predict_api():
     if PIPELINE is None: return jsonify({'error': 'Model not loaded. Please restart the server.'}), 500
@@ -130,9 +129,8 @@ def predict_api():
         price = max(0, predicted_price_usd)
         segment = get_price_segment(price)
 
-        # --- HATA ÇÖZÜMÜ: NumPy float'ı standart Python float'ına dönüştür ---
         return jsonify({
-            'predicted_price': float(round(price, 2)),  # Sadece 'float()' eklendi
+            'predicted_price': float(round(price, 2)),
             'currency': 'USD',
             'segment': segment
         })
@@ -141,7 +139,8 @@ def predict_api():
         return jsonify({'error': str(e)}), 500
 
 
-# --- UYGULAMA BAŞLATMA ---
+# --- APPLICATION LAUNCH ---
 if __name__ == '__main__':
     load_model()
+    # Bu, hem yerel test (debug) hem de Docker (host='0.0.0.0') için zorunlu olan koddur.
     app.run(host='0.0.0.0', debug=True, port=5000)
